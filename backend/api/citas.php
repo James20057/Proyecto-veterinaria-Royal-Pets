@@ -5,7 +5,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../core/session.php';
-require_once __DIR__ . '/../controllers/ServicioController.php';
+require_once __DIR__ . '/../controllers/CitaController.php';
 
 require_login_api();
 
@@ -13,33 +13,36 @@ $action = $_GET['action'] ?? '';
 
 try {
     switch ($action) {
+        
         case 'list':
-            $servicios = ServicioController::listar();
+            $citas = CitaController::listar();
             echo json_encode([
                 'success' => true,
-                'message' => 'Servicios obtenidos',
-                'data' => $servicios
+                'message' => 'Citas obtenidas',
+                'data' => $citas
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             break;
+
         case 'get':
             $id = (int)($_GET['id'] ?? 0);
-            $servicio = ServicioController::obtener($id);
+            $cita = CitaController::obtener($id);
             
-            if ($servicio) {
+            if ($cita) {
                 echo json_encode([
                     'success' => true,
-                    'servicio' => $servicio
+                    'cita' => $cita
                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             } else {
                 http_response_code(404);
                 echo json_encode([
                     'success' => false,
-                    'message' => 'Servicio no encontrado'
+                    'message' => 'Cita no encontrada'
                 ]);
             }
             break;
+
         case 'create':
-            [$success, $message] = ServicioController::crear($_POST);
+            [$success, $message] = CitaController::crear($_POST);
             
             if ($success) {
                 echo json_encode([
@@ -57,7 +60,7 @@ try {
             break;
 
         case 'update':
-            [$success, $message] = ServicioController::actualizar($_POST);
+            [$success, $message] = CitaController::actualizar($_POST);
             
             if ($success) {
                 echo json_encode([
@@ -76,7 +79,7 @@ try {
 
         case 'delete':
             $id = (int)($_POST['id'] ?? 0);
-            [$success, $message] = ServicioController::eliminar($id);
+            [$success, $message] = CitaController::eliminar($id);
             
             if ($success) {
                 echo json_encode([
@@ -99,7 +102,7 @@ try {
                 'message' => 'Acción no válida'
             ]);
     }
-    
+
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode([
@@ -107,3 +110,4 @@ try {
         'message' => 'Error: ' . $e->getMessage()
     ]);
 }
+?>
