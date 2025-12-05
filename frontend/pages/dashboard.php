@@ -5,7 +5,6 @@ require_once __DIR__ . '/../../backend/config/database.php';
 require_login_page();
 
 try {
-    // ← YA NO pongas require_once aquí, ya lo tienes arriba
     
     // Consulta para citas pendientes
     $stmt = $conexion->query('SELECT COUNT(*) as total FROM citas WHERE estado = \'pendiente\'');
@@ -272,3 +271,4 @@ try {
 
 </body>
 </html>
+
